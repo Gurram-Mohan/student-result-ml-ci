@@ -12,7 +12,7 @@ class TestMLPipeline(unittest.TestCase):
         self.assertTrue(os.path.exists("student_results.csv"))
 
     def test_model_created(self):
-        self.assertTrue(os.path.exists("student_result_model_missing.pkl"))
+        self.assertTrue(os.path.exists("student_result_model.pkl"))
 
     def test_metrics_created(self):
         self.assertTrue(os.path.exists("metrics.json"))
