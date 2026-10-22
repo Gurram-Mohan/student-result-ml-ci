@@ -66,6 +66,10 @@ jobs:
           echo "Prediction response: $response"
           echo "$response" | grep -q '"prediction"'
 
+      - name: Stop and remove Docker container
+        if: always()
+        run: docker rm -f student-result-ml-container || true
+
       - name: Wait for application to become ready
         run: |
           for i in {1..15}; do
