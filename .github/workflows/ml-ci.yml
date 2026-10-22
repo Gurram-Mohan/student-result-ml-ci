@@ -54,7 +54,7 @@ jobs:
       - name: Wait for application to become ready
         run: |
           for i in {1..15}; do
-            if curl --fail --silent http://localhost:5000/health; then
+            if curl --fail --silent http://localhost:5001/health; then
               echo "Application is ready."
               exit 0
             fi
@@ -70,7 +70,7 @@ jobs:
             -X POST \
             -H "Content-Type: application/json" \
             -d '{"attendance":90,"internal_marks":85,"assignment_marks":88,"previous_score":80}' \
-            http://localhost:5001/predict)
+            http://localhost:5000/predict)
           echo "Prediction response: $response"
           echo "$response" | grep -q '"prediction"'
 
