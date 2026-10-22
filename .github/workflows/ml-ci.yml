@@ -47,7 +47,10 @@ jobs:
         run: python -m unittest test_app.py -v
 
       - name: Build Docker image
-        run: docker build -t student-result-ml:${{ github.sha }} .
+        run: docker build -t student-result-ml:${{ github.sha }} 
+
+      - name: Start Docker container
+        run: docker run -d --name student-result-ml-container -p 5000:5000 student-result-ml:${{ github.sha }}
 
       - name: Prepare release candidate
         run: |
