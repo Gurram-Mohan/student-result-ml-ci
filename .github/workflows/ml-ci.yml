@@ -52,6 +52,9 @@ jobs:
       - name: Start Docker container
         run: docker run -d --name student-result-ml-container -p 5000:5000 student-result-ml:${{ github.sha }}
 
+      - name: Show Docker container logs
+        if: always()
+        run: docker logs student-result-ml-container || true
       
       - name: Test prediction endpoint
         run: |
