@@ -1,3 +1,4 @@
+
 FROM python:3.11-slim
 
 WORKDIR /app
@@ -9,6 +10,6 @@ COPY app.py .
 COPY student_result_model.pkl .
 COPY metrics.json .
 
-EXPOSE 5000
+EXPOSE 8000
 
-CMD ["python", "app.py"]
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
