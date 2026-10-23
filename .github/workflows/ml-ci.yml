@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: read
+  packages: write
 
 jobs:
   train-test-containerize:
@@ -73,6 +74,28 @@ jobs:
             http://localhost:5000/predict)
           echo "Prediction response: $response"
           echo "$response" | grep -q '"prediction"'
+
+      - name: Set up image name
+        run: |
+          echo "IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}/student-result-ml" >> $GITHUB_ENV
+
+      - name: Log in to GitHub Container Registry
+        if: github.event_name != 'pull_request'
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io \
+            -u "${{ github.actor }}" --password-stdin
+
+      - name: Tag Docker image
+        if: github.event_name != 'pull_request'
+        run: |
+          docker tag student-result-ml:${{ github.sha }} $IMAGE_NAME:latest
+          docker tag student-result-ml:${{ github.sha }} $IMAGE_NAME:sha-${{ github.sha }}
+
+      - name: Push Docker image to GHCR
+        if: github.event_name != 'pull_request'
+        run: |
+          docker push $IMAGE_NAME:latest
+          docker push $IMAGE_NAME:sha-${{ github.sha }}
 
       - name: Show Docker container logs
         if: always()
